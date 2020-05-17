@@ -1,0 +1,169 @@
+/* 
+Mete ÇOBAN 
+*/
+#include <stdio.h>
+#pragma warning(disable:4996)
+
+struct studentData
+{
+	char name[50];
+	char lastName[80];
+	char major[100];
+	int id;
+};
+typedef struct studentData sd;
+
+int one(sd students[], int i); // Button 1
+void two(sd students[], int i); // Button 2
+void three(sd students[], int i); // Button 3
+void four(sd students[], int i); // Button 4
+int search(sd students[], int n, int x); // To search to id
+void sort(sd students[], int s); // To sorting
+int charControl(int deterrent); // So the user doesn't type characters
+void options(sd students[], int ti);//Main option function ,ti =tempSize
+
+int main(void)
+{
+	sd students[40];
+	int tempSize = 0;
+	options(students, tempSize);
+}
+
+int one(sd students[40], int i)
+{
+	int j = i + 1;
+	for (i; i < j; i++)
+	{
+		printf("\nWrite your student's name:");
+		scanf("%s", &students[i].name);
+		printf("Write your student's surname:");
+		scanf("%s", &students[i].lastName);
+		printf("Write your student's major:");
+		scanf("%s", &students[i].major);
+		printf("Write your student's ID:");
+		students[i].id = charControl(0); // User can write only int value
+	}
+	printf("\n");
+	return i;
+}
+
+void two(sd students[40], int i)
+{
+	int idControl = 0;
+	printf("\nWrite your student's ID:");
+	idControl = charControl(0);
+	int result = search(students, i, idControl);
+	if (result == -1)
+	{
+		printf("\nThe value you entered was not found.\n\n");
+	}
+	else
+	{
+		printf("\nStudent Order %d => Name: %s\n                   Surname: %s\n                   Major: %s\n                   ID: %d\n\n", result + 1, students[result].name, students[result].lastName, students[result].major, students[result].id);
+	}
+}
+
+void three(sd students[40], int i)
+{
+	sort(students, i);
+	printf("\nStudents were sorted according to their identities.(If you want to see,press 4)\n\n");
+}
+
+void four(sd students[40], int i)
+{
+	int b = 0;
+	printf("\n            All Students  \n");
+	printf("   Name / Surname / Major / ID");
+	printf("\n  -----------------------------");
+	for (b; b < i; b++)
+	{
+		printf("\n%d. %s / %s / %s / %d\n", b + 1, students[b].name, students[b].lastName, students[b].major, students[b].id);
+	}
+	printf("\nYou have %d students.\n\n", b);
+}
+
+int search(sd students[40], int i, int id)
+{
+	int n;
+	for (n = 0; n < i; n++)
+		if (students[n].id == id)
+			return n;
+	return -1;
+}
+
+void sort(sd students[40], int i)
+{
+	int z, j;
+	struct studentData temp;
+	for (z = 0; z < i - 1; z++)
+	{
+		for (j = 0; j < (i - 1 - z); j++)
+		{
+			if (students[j].id > students[j + 1].id)
+			{
+				temp = students[j];
+				students[j] = students[j + 1];
+				students[j + 1] = temp;
+			}
+		}
+	}
+}
+
+int charControl(int deterrent) {
+	while (scanf("%d", &deterrent) != 1)
+	{
+		printf("Please enter an integer: ");
+		while (getchar() != '\n');
+	}
+	return deterrent;
+}
+
+void options(sd students[40], int ti) //ti =tempSize
+{
+	int step = 1, step2 = 1;
+	while (step != 5)
+	{
+		printf("Options\nPress [1] to add a new record of students.\nPress [2] to search for a student (using its ID number).\nPress [3] to sort the records of students according to their ID numbers in an ascending order.\nPress [4] to show the information of all students.\nPress [5] to exit the program.\n");
+		printf("Which option: ");
+		step = charControl(0);
+		switch (step)
+		{
+		case 1:
+			ti = one(students, ti);
+			step2 = 1;
+			while (step2 != 0)  // To ask again 
+			{
+				printf("Press [1] to write one more new student or press [0] to come back to options.\n"); printf("[1] or [0]:");
+				step2 = charControl(0);
+				switch (step2)
+				{
+				case 1:
+					ti = one(students, ti);
+					break;
+				case 0:
+					printf("\n");
+					break;
+				default:
+					printf("Wrong number!\n");
+					break;
+				}
+			}
+			break;
+		case 2:
+			two(students, ti);
+			break;
+		case 3:
+			three(students, ti);
+			break;
+		case 4:
+			four(students, ti);
+			break;
+		case 5:
+			break;
+		default:
+			printf("\nPlease, write correct number.\n\n");
+			break;
+		}
+	}
+	printf("\nYou left the program.\n");
+}
