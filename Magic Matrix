@@ -1,0 +1,127 @@
+/*
+ Mete Çoban
+*/
+#include<stdio.h>
+#pragma warning(disable:4996)
+
+//FUNCTION1
+void read(int matrix[20][20], int size) {
+	int row, column;
+	printf("\nWrite a number of matrix:\n");
+	for (row = 0; row < size; row++) {
+		for (column = 0; column < size; column++) {
+			printf("Element= [%d],[%d] : ", row, column);
+			scanf("%d", &matrix[row][column]);
+		}
+		printf("\n");
+	}
+}
+//FUNCTION2
+void write(int matrix[20][20], int size) {
+	int row, column;
+	printf("The Matrix is: \n");
+	for (row = 0; row < size; row++) {
+		for (column = 0; column < size; column++) {
+			printf(" %3d ", matrix[row][column]);
+		}
+		printf("\n\n");
+	}
+}
+//FUNCTION3
+int cross(int matrix[20][20], int size) {
+	int row, column, sum = 0;
+	for (row = 0; row < size; row++) {
+		for (column = 0; column < size; column++) {
+			if (row == column)
+				sum = sum + matrix[row][column];
+		}
+	}
+	return sum;
+}
+//FUNCTION4
+int side(int matrix[20][20], int size,int temp) {
+	int row, column, sum1,lamp=0;
+	for (row = 0; row < size; row++) {
+		sum1 = 0;
+		for (column = 0; column < size; column++) {
+			sum1 = sum1 + matrix[row][column];
+		}
+		if (temp == sum1) {
+			lamp = 1;
+		}
+		else {
+			lamp = 0;
+			break;
+		}
+	}
+	return lamp;
+}
+//FUNCTION5
+int under(int matrix[20][20], int size,int temp) {
+	int row, column, sum2,lamp=0;
+	for (row = 0; row < size; row++) {
+		sum2 = 0;
+		for (column = 0; column < size; column++) {
+			sum2 = sum2 + matrix[column][row];
+		}
+		if (temp == sum2) {
+			lamp = 1;
+		}
+		else {
+			lamp = 0;
+			break;
+		}
+	}
+	return lamp;
+}
+//FUNCTION6
+int diagonal(int matrix[20][20], int size,int temp) {
+	int row, column, sumx = 0, i = 0,lamp=0;
+	i = size;
+	for (row = 0; row < size; row++) {
+		int j = 0;
+		for (column = 0; column < size; column++) {
+			j++;
+			if (j == i) {
+				sumx = sumx + matrix[row][column];
+			}
+		}
+		i=i-1;
+	}
+	if (temp == sumx) {
+		lamp = 1;
+	}
+	else {
+		lamp = 0;	
+	}
+	return lamp;
+}
+//RESULT FUNCTION
+void result( int two, int three,int four,int size) {
+	int a;
+	if (two && three &&four==1){
+		a = 1;
+	}
+	else { a = 0; }
+	if (a == 1) {
+		printf("\n This %dx%d matrix is a magic matrix.\n\n", size, size);
+	}
+	else {
+		printf("\n This %dx%d matrix is not a magic matrix.\n\n", size, size);
+	}
+}
+
+int main() {
+	int matrix[20][20], size;
+	printf("Please write a size of matrix:");
+	scanf("%d", &size);
+
+	read(matrix, size);
+	write(matrix, size);
+    int temp = cross(matrix, size); 
+	int temp2 = side(matrix, size,temp); 
+	int temp3 = under(matrix, size,temp);
+	int temp4 = diagonal(matrix, size,temp);
+	result(temp2, temp3,temp4,size);
+	system("pause");
+}
