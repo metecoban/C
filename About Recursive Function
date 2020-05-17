@@ -1,0 +1,108 @@
+/*
+Mete Çoban  
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#pragma warning(disable:4996)
+
+// Read
+int read(int n) {
+	printf("How many numbers will be in the array : "); scanf("%d", &n);
+	printf("\nWrite different and  in order numbers!\n");
+	return n;
+}
+// Recursive Write
+int write(int array[20], int temp,int i) {
+	if (i == temp) {
+		return 0;
+	}
+	printf("Write your %d. index : ", i); scanf("%d", &array[i]);
+	if (array[i] < array[i - 1]) { // if user enter numbers irregular
+		printf("\nPlease, enter numbers orderly!\n");
+		exit(0);
+	}
+	if (array[i] == array[i - 1]) { // if user enter same numbers
+			printf("\nPlease, enter different numbers!\n");
+			exit(0);
+	}
+	i++;
+	return write(array, temp,i);
+}
+// Recursive See to array
+int see1(int array[20], int temp, int i) {
+	if (i == temp - 1) {
+		return i;
+	}
+
+	printf("%d, ", array[i]);
+	i++;
+	return see1(array, temp, i);
+}
+int see2(int array[20], int temp, int j) {
+	if (j == temp) {
+		return 0;
+	}
+
+	printf("%d", array[j]);
+	j++;
+	return see2(array, temp, j);
+
+}
+void see(int array[20], int temp) {
+	int i = 0;
+	
+	printf("\nThis is your array :\n");
+	printf("Array[%d]={", temp);
+	int count=see1(array, temp, i);
+	int j = count;
+	see2(array, temp, j);
+	
+	printf("}\n\n");
+}
+// Scan
+int scan(int count) {
+	printf("Which of your array would you like to check : ");
+	scanf("%d", &count);
+	return count;
+}
+// Recursive Control
+int binarySearch(int array[20], int first, int last, int count) {
+	if (last >= first) {
+		int middle = first + (last - first) / 2;
+
+		if (array[middle] == count) {
+			return middle;
+		}
+		if (array[middle] > count) {
+			return binarySearch(array, first, middle - 1, count);
+		}
+		if (array[middle] < count) {
+			return binarySearch(array, middle + 1, last, count);
+		}
+	}
+	return -1;
+}
+// Conclusion
+void conclusion(int result) {
+	if (result == -1) {
+		printf("\nElement is not present in array.\n");
+	}
+	else {
+		printf("\nElement is present at index %d .\n", result);
+	}
+}
+
+int main() {
+	int array[20], count = 0, n = 0, first = 0, last,i=0;
+
+	int temp = read(n);
+	write(array, temp,i);
+	see(array, temp);
+	int which = scan(count);
+	last = temp - 1;
+	int result = binarySearch(array, first, last, which);
+	conclusion(result);
+
+	return 0;
+}
+
